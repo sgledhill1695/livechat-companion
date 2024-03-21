@@ -42,7 +42,6 @@ export default function ResponseTime({filter}){
                 setAverageResponseTime(secondsToTimestamp(average));
                 setData(data.data);
 
-
                 if(data.dataTwo){
                     const avgTwo = calulateAverageResponseTime(data.dataTwo);
                     setAverageTwo(avgTwo);
@@ -55,7 +54,7 @@ export default function ResponseTime({filter}){
             }catch(err){
 
                 alert('An error occured fetching total chats');
-                console.log(err)
+                console.log(err);
 
             }
         }
@@ -71,8 +70,14 @@ export default function ResponseTime({filter}){
 
             <CardHeader className="pb-0">
                 <CardTitle className="text-md flex justify-between items-center">
-                    Avg response time
-                    <svg xmlns="http://www.w3.org/2000/svg" className="fill-[#A1A1AA] w-4" viewBox="0 0 448 512"><path d="M176 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h16V98.4C92.3 113.8 16 200 16 304c0 114.9 93.1 208 208 208s208-93.1 208-208c0-41.8-12.3-80.7-33.5-113.2l24.1-24.1c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L355.7 143c-28.1-23-62.2-38.8-99.7-44.6V64h16c17.7 0 32-14.3 32-32s-14.3-32-32-32H224 176zm72 192V320c0 13.3-10.7 24-24 24s-24-10.7-24-24V192c0-13.3 10.7-24 24-24s24 10.7 24 24z" /></svg>
+                    {loading ? ( 
+                        <Skeleton className="h-5 w-full rounded-lg  bg-[#7a7a7d] mb-2" />
+                    ) : (
+                        <>
+                            Avg response time
+                            <svg xmlns="http://www.w3.org/2000/svg" className="fill-[#A1A1AA] w-4" viewBox="0 0 448 512"><path d="M176 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h16V98.4C92.3 113.8 16 200 16 304c0 114.9 93.1 208 208 208s208-93.1 208-208c0-41.8-12.3-80.7-33.5-113.2l24.1-24.1c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L355.7 143c-28.1-23-62.2-38.8-99.7-44.6V64h16c17.7 0 32-14.3 32-32s-14.3-32-32-32H224 176zm72 192V320c0 13.3-10.7 24-24 24s-24-10.7-24-24V192c0-13.3 10.7-24 24-24s24 10.7 24 24z" /></svg>
+                        </>
+                    )}
                 </CardTitle>
             </CardHeader>
 
@@ -80,7 +85,7 @@ export default function ResponseTime({filter}){
             <CardContent className="mt-2" >
 
                 {loading ? (
-                    <Skeleton className="h-10 w-full rounded-lg  bg-[#7a7a7d] mb-2" />
+                    <Skeleton className="h-9 w-full rounded-lg  bg-[#7a7a7d]" />
                 ) : (
 
                     <p className="text-4xl font-bold text-[#FAFAFA]">
@@ -91,13 +96,12 @@ export default function ResponseTime({filter}){
                 {filter !== 'today' && (
                     <>
                         {loading ? (
-                            <Skeleton className="h-4 w-full rounded-lg bg-[#7a7a7d]" />
+                            <Skeleton className="h-4 w-full rounded-lg bg-[#7a7a7d] mt-3 items-center" />
                         ) : (
                             <CardDescription className="mt-2 flex items-center">
 
                                 {dataTwo && (
                                     <>
-
                                         {averageOne >= averageTwo && (
                                             <>
                                                 <svg xmlns="http://www.w3.org/2000/svg" className="fill-[red] w-2" viewBox="0 0 384 512"><path d="M56 416c-13.3 0-24-10.7-24-24V152c0-13.3 10.7-24 24-24s24 10.7 24 24V334.1L311 103c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-231 231H296c13.3 0 24 10.7 24 24s-10.7 24-24 24H56z" /></svg>

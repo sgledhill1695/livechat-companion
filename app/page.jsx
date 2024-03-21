@@ -43,7 +43,7 @@ export default function Home() {
                 </div>
 
                 <div className="col-span-2">
-                    <ResponseTime 
+                     <ResponseTime 
                         filter={filter}
                     />
                 </div>
@@ -55,12 +55,14 @@ export default function Home() {
                 </div>
 
                 <div className="col-span-2">
-                     <Ratings/>
+                    <Ratings
+                        filter={filter}
+                    />
                 </div>
 
                 <div className='col-span-4'>
 {/*                     <AgentsPerformace/>
- */}                </div>
+                </div>
 
                 <div className='col-span-4'>
 {/*                     <AgentsAvailability />

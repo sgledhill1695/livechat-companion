@@ -49,12 +49,14 @@ export default function Home() {
                 </div>
 
                 <div className="col-span-2">
-{/*                      <Duration/>
- */}                </div>
+                    <Duration
+                        filter={filter}
+                    />
+                </div>
 
                 <div className="col-span-2">
-{/*                     <Ratings/>
- */}                </div>
+                     <Ratings/>
+                </div>
 
                 <div className='col-span-4'>
 {/*                     <AgentsPerformace/>

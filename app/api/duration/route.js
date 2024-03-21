@@ -2,7 +2,7 @@ import { getFilter } from "@/lib/functions";
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request){
+export async function GET(request) {
 
     const searchParams = request.nextUrl.searchParams;
     const from = searchParams.get('from');
@@ -11,7 +11,7 @@ export async function GET(request){
 
     const filter = getFilter(filterParam);
 
-    try {
+    try{
 
         const requestData = {
             "distribution": "day",
@@ -21,7 +21,7 @@ export async function GET(request){
             }
         };
 
-        const response = await fetch(`${process.env.LIVECHAT_API_URL}/reports/chats/first_response_time`, {
+        const response = await fetch(`${process.env.LIVECHAT_API_URL}/reports/chats/duration`, {
             method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ export async function GET(request){
                 }
             };
 
-            const responseTwo = await fetch(`${process.env.LIVECHAT_API_URL}/reports/chats/first_response_time`, {
+            const responseTwo = await fetch(`${process.env.LIVECHAT_API_URL}/reports/chats/duration`, {
                 method: 'POST',
                 headers: new Headers({
                     'Content-Type': 'application/json',
@@ -65,15 +65,20 @@ export async function GET(request){
                     dataTwo: dataTwo
                 }
             )
+
         } else {
+
             const data = await response.json();
+
             return Response.json(
                 {
                     status: 200,
                     data: data,
                 }
             );
-        };
+
+
+        }
 
     } catch(err){
 
@@ -85,4 +90,6 @@ export async function GET(request){
             }
         )
     }
+
+
 }

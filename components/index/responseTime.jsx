@@ -40,15 +40,16 @@ export default function ResponseTime({filter}){
                 const average = calulateAverageResponseTime(data.data);
                 setAverageOne(average)
                 setAverageResponseTime(secondsToTimestamp(average));
+                setData(data.data);
+
 
                 if(data.dataTwo){
                     const avgTwo = calulateAverageResponseTime(data.dataTwo);
-                    setAverageTwo(avgTwo)
+                    setAverageTwo(avgTwo);
                     setPercentage(getIncreaseDecreasePercentage(average, avgTwo));
+                    setDataTwo(data.dataTwo);
                 };
 
-                setData(data.data);
-                setDataTwo(data.dataTwo)
                 setLoading(false);
 
             }catch(err){
@@ -110,7 +111,6 @@ export default function ResponseTime({filter}){
                                                 {percentage}% quicker than last {filter}
                                             </>
                                         )}
-
 
                                     </>
                                 )}

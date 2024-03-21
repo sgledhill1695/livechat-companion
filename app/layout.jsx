@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
                     <nav>
                         <ul className="flex gap-[20px]">
                             <li className="text-[15px]">
-                                Customer service report
+                                Customer service report - When 0 chats that day - sort NaN
                             </li>
                         </ul>
                     </nav>

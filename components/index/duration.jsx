@@ -1,59 +1,58 @@
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+'use client'
 
-async function getData() {
+//functions
+import { useState, useEffect } from "react";
+import { getFromDateTime, calulateAverageChatDuration, secondsToTimestamp, getIncreaseDecreasePercentage } from "@/lib/functions";
 
-    try {
+//Components
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import { Skeleton } from "../ui/skeleton";
 
-        const todayStart = new Date();
-        todayStart.setHours(0, 0, 0, 0);
-        const currentTime = new Date();
+export default function Duration({filter}){
 
-        const requestData = {
-            "filters": {
-                "from": todayStart,
-                "to": currentTime
-            }
+    //States
+    const [data, setData] = useState(null);
+    const [dataTwo, setDataTwo] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [percentage, setPercentage] = useState(null);
+    const [averageChatDuration, setAverageChatDuration] = useState(null);
+    const [durationOne, setDurationOne] = useState(0);
+    const [durationTwo, setDurationTwo] = useState(0);
+
+    //Effects
+    useEffect(() => {
+
+        setLoading(true);
+        const fromDateTime = getFromDateTime(filter);
+        const toDateTime = new Date();
+
+        const getData = async () => {
+
+            const res = await fetch(`/api/duration?from=${fromDateTime.toISOString()}&to=${toDateTime.toISOString()}&filter=${filter}`);
+            const data = await res.json();
+
+            if (data.status !== 200) {
+                throw new Error("An Error Occurred");
+            };
+
+            const drOne = calulateAverageChatDuration(data.data);
+            setDurationOne(durationOne)
+            setAverageChatDuration(secondsToTimestamp(drOne));
+
+            if (data.dataTwo) {
+                const drTwo = calulateAverageChatDuration(data.dataTwo);
+                setDurationTwo(drTwo);
+                setPercentage(getIncreaseDecreasePercentage(drOne, drTwo));
+                setDataTwo(data.dataTwo)
+            };
+
+            setLoading(false);
+
         };
 
-        const response = await fetch(`${process.env.LIVECHAT_API_URL}/reports/chats/duration`, {
-            method: 'POST',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                "Authorization": `Basic ${btoa(`${process.env.LIVECHAT_API_USERNAME}:${process.env.LIVECHAT_API_PASSWORD}`)}`
-            }),
-            body: JSON.stringify(requestData)
-        });
+        getData();
 
-        return response.json();
-
-    }
-    catch (err) {
-
-        console.log(err);
-
-    }
-}
-
-
-export default async function Duration(){
-
-    const data = await getData();
-
-    let avgChatDuration = 0;
-
-    Object.keys(data.records).forEach(record => {
-        avgChatDuration = data.records[record].agents_chatting_duration;
-    });
-
-    const avgChatMins = Math.floor(avgChatDuration / 60);
-    const avgChatSeconds = avgChatDuration - avgChatMins * 60;
+    }, [filter]);
 
     return(
         <Card className="w-full rounded-[10px] bg-[#09090B] text-[#FAFAFA] border-[#46464a] h-full">
@@ -66,10 +65,45 @@ export default async function Duration(){
             </CardHeader>
 
             <CardContent className="mt-2">
-                <p className="text-4xl font-bold text-[#ff7c92]">
-                    {avgChatMins}m {avgChatMins}s
-                </p>
-                <CardDescription className="mt-2">+5% from last month</CardDescription>
+
+                {loading ? (
+                    <Skeleton className="h-10 w-full rounded-lg  bg-[#7a7a7d] mb-2" />
+                ) : (
+
+                    <p className="text-4xl font-bold text-[#FAFAFA]">
+                        {averageChatDuration}
+                    </p>
+                )}
+
+                {filter !== 'today' && (
+                    <>
+                        {loading ? (
+                            <Skeleton className="h-4 w-full rounded-lg bg-[#7a7a7d]" />
+                        ) : (
+                        <CardDescription className="mt-2 flex items-center">
+                            {dataTwo && (
+                                <>
+                                    {durationOne >= durationTwo && (
+                                        <>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="fill-[red] w-2" viewBox="0 0 384 512"><path d="M56 416c-13.3 0-24-10.7-24-24V152c0-13.3 10.7-24 24-24s24 10.7 24 24V334.1L311 103c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-231 231H296c13.3 0 24 10.7 24 24s-10.7 24-24 24H56z" /></svg>
+                                            {percentage}% longer than last {filter}
+                                        </>
+                                    )}
+
+                                    {durationTwo > durationOne && (
+                                        <>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="fill-[#30a000] w-2" viewBox="0 0 384 512"><path d="M352 128c0-17.7-14.3-32-32-32L96 96c-17.7 0-32 14.3-32 32s14.3 32 32 32l146.7 0L41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L288 205.3 288 352c0 17.7 14.3 32 32 32s32-14.3 32-32l0-224z" /></svg>
+                                            {percentage}% quicker than last {filter}
+                                        </>
+                                    )}
+
+                                </>
+                            )}
+                        </CardDescription>
+                        )}
+                    </>
+                )}
+
             </CardContent>
 
         </Card>

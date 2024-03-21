@@ -1,11 +1,6 @@
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+
+//Components
+import { Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 
 async function getData(){
 

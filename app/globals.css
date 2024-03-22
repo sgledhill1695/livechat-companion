@@ -112,3 +112,17 @@
         --ring: 346.8 77.2% 49.8%;
     }
 }
+
+.spinner{
+  animation: rotateSpinner 1s infinite
+}
+
+@keyframes rotateSpinner {
+  from{
+    rotate: 0deg;
+  }
+  to{
+    rotate: 360deg;
+  }
+  
+}

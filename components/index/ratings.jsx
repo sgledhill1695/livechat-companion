@@ -30,8 +30,6 @@ export default function Ratings({filter}){
                 const res = await fetch(`/api/ratings?from=${fromDateTime.toISOString()}&to=${toDateTime.toISOString()}&filter=${filter}`);
                 const data = await res.json();
 
-                console.log(data)
-
                 if (data.status !== 200) {
                     throw new Error("An Error Occurred");
                 };

@@ -8,10 +8,9 @@ export async function GET(request) {
     const from = searchParams.get('from');
     const to = searchParams.get('to');
     const filterParam = searchParams.get('filter');
-
     const filter = getFilter(filterParam);
 
-    try {
+    try{
 
         const requestData = {
             "distribution": "day",
@@ -39,7 +38,7 @@ export async function GET(request) {
             }
         );
 
-    } catch(err){
+    }catch(err){
 
         console.log(err)
         return Response.json(
@@ -49,9 +48,8 @@ export async function GET(request) {
             }
         )
 
+
     }
-
-
 
 
 

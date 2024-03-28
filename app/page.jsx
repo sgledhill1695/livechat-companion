@@ -9,8 +9,8 @@ import TotalChats from "@/components/index/totalChats";
 import ResponseTime from "@/components/index/responseTime";
 import Duration from "@/components/index/duration";
 import Ratings from "@/components/index/ratings";
-//const AgentsPerformace = dynamic(() => import("@/components/index/agentAvailability"), { ssr: false });
 import AgentsPerformace from '@/components/index/agentsPerformance';
+import AgentsAvailability from '@/components/index/agentAvailability';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 
@@ -67,23 +67,13 @@ export default function Home() {
                     />
                 </div>
 
-{/*                 <div className='col-span-3'>
-                    <AgentsPerformace
-                        filter={filter}
-                    />
-                </div>
- */}
-{/*                 <div className='col-span-2'>
-                    <AgentsPerformace
-                        filter={filter}
-                    />
-                </div>
- */}
 
-{/*                 <div className='col-span-4'>
-                    <AgentsAvailability />
+                <div className='col-span-3'>
+                    <AgentsAvailability
+                        filter={filter}
+                    />
                </div>
- */}
+
             </div>
 
         </main>
